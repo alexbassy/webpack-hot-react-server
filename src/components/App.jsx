@@ -1,7 +1,7 @@
-const React = require('react')
+import React from 'react'
 
-module.exports = () => {
-  return <div>hey</div>
+export default () => {
+  return <div>hey gal!</div>
 }
 
 if (module.hot) {
