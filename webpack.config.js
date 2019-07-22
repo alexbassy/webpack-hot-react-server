@@ -5,6 +5,21 @@ const dist = path.join(__dirname, 'dist')
 const isProduction = process.env.NODE_ENV === 'production'
 const mode = isProduction ? 'production' : 'development'
 
+const babel = {
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  }
+}
+
 const CLIENT_CONFIG = {
   name: 'client',
   mode,
@@ -20,6 +35,7 @@ const CLIENT_CONFIG = {
       __SERVER__: false
     })
   ],
+  ...babel,
   devtool: 'source-map'
 }
 
@@ -40,6 +56,7 @@ const SERVER_CONFIG = {
       __SERVER__: true
     })
   ],
+  ...babel,
   devtool: 'source-map'
 }
 
