@@ -1,0 +1,28 @@
+{
+  "name": "webpack-dev-middleware-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development node src/index.js",
+    "build": "NODE_ENV=production $(npm bin)/webpack",
+    "serve": "NODE_ENV=production node dist/entry.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "cli-progress": "^2.1.1",
+    "express": "^4.17.1",
+    "html-minifier": "^4.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "webpack": "^4.36.1",
+    "webpack-dev-middleware": "^3.7.0",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-hot-server-middleware": "^0.6.0"
+  }
+}
