@@ -68,8 +68,12 @@ const DEV_SERVER_CONFIG = {
     __filename: false
   },
   name: 'dev-server',
-  mode: 'production',
   entry: './src/index.js',
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': "'production'"
+    })
+  ],
   output: {
     ...SERVER_CONFIG.output,
     path: dist,
