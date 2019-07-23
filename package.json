@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development node src/index.js",
+    "dev": "NODE_ENV=development node --inspect-brk=5858 src/index.js",
+    "dev:debug": "NODE_ENV=development node --inspect-brk=5858 src/index.js",
     "build:dev": "NODE_ENV=development $(npm bin)/webpack",
     "build": "NODE_ENV=production $(npm bin)/webpack",
     "serve": "NODE_ENV=production node dist/entry.js"
