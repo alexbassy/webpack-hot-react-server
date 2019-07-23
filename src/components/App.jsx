@@ -1,9 +1,8 @@
+import { hot } from 'react-hot-loader/root'
 import React from 'react'
 
-export default () => {
-  return <div>hey gal!</div>
+const App = () => {
+  return <div>i hawt</div>
 }
 
-if (module.hot) {
-  console.log(`dis module is hawt`)
-}
+export default hot(App)
