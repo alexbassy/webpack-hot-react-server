@@ -14,7 +14,7 @@ const getBody = (options = {}) => {
   <body>
     <div class=env>server</div>
     <div id="root">${ReactDOM.renderToString(React.createElement(App))}</div>
-    <script src="/js/main.js"></script>
+    <script src="/main.js"></script>
   </body>
   </html>`
 

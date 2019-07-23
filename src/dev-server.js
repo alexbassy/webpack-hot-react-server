@@ -1,8 +1,9 @@
 const webpack = require('webpack')
 // const progress = require('cli-progress')
 const config = require('../webpack.config.js')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
+// const webpackDevMiddleware = require('webpack-dev-middleware')
+// const webpackHotMiddleware = require('webpack-hot-middleware')
+const webpackHotServerMiddleware = require('./dev-hot-middleware')
 // const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 
 function startDevelopmentServer(app, port = 3000) {
@@ -28,18 +29,34 @@ function startDevelopmentServer(app, port = 3000) {
   // )
 
   app.use(
-    webpackDevMiddleware(compiler, {
-      noInfo: true
+    require('webpack-dev-middleware')(compiler, {
+      logLevel: 'warn',
+      serverSideRender: true,
+      publicPath: config[0].output.publicPath,
     })
   )
 
+  // Step 3: Attach the hot middleware to the compiler & the server
   app.use(
-    webpackHotServerMiddleware(compiler, {
-      serverRendererOptions: {
-        mode: 'development'
-      }
+    require('webpack-hot-middleware')(compiler, {
+      log: console.log,
+      path: '/__webpack_hmr',
+      heartbeat: 10 * 1000,
     })
   )
+
+  app.get(
+    '/',
+    webpackHotServerMiddleware(compiler, {
+      serverRendererOptions: {
+        mode: 'development',
+      },
+    })
+  )
+
+  app.use(function(req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+  })
 
   app.listen(port, () => {
     console.log(`Swimming on http://localhost:/${port}`)

@@ -3,9 +3,8 @@ import express from 'express'
 import serverRenderer from './server/server.js'
 
 function startProductionServer(app, port = 3000) {
-  const CLIENT_ASSETS_DIR = path.resolve(__dirname, 'js')
-  console.log('CLIENT_ASSETS_DIR', CLIENT_ASSETS_DIR)
-  app.use('/js', express.static(CLIENT_ASSETS_DIR))
+  const CLIENT_ASSETS_DIR = path.resolve(__dirname, 'client')
+  app.use(express.static(CLIENT_ASSETS_DIR))
   app.use(
     serverRenderer({
       serverRendererOptions: {

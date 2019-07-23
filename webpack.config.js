@@ -11,32 +11,40 @@ const babel = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
-      }
-    ]
+        use: ['babel-loader'],
+      },
+    ],
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
-  }
+    extensions: ['*', '.js', '.jsx'],
+  },
 }
 
 const CLIENT_CONFIG = {
   name: 'client',
   mode,
   target: 'web',
-  entry: './src/client',
+  entry: [
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    './src/client',
+  ],
   output: {
-    path: path.join(dist, 'js'),
-    filename: 'main.js'
+    path: path.join(dist, 'client'),
+    publicPath: '/',
+    filename: '[name].js',
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: true,
+    }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
-      __SERVER__: false
-    })
+      __SERVER__: false,
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
   ...babel,
-  devtool: 'source-map'
+  devtool: 'source-map',
 }
 
 const SERVER_CONFIG = {
@@ -48,16 +56,17 @@ const SERVER_CONFIG = {
     path: path.join(dist, 'server'),
     filename: 'server.js',
     libraryTarget: 'commonjs2',
-    publicPath: '/dist/'
+    publicPath: '/dist/',
   },
   plugins: [
     new webpack.DefinePlugin({
       __CLIENT__: false,
-      __SERVER__: true
-    })
+      __SERVER__: true,
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
   ...babel,
-  devtool: 'source-map'
+  devtool: 'source-map',
 }
 
 const DEV_SERVER_CONFIG = {
@@ -65,24 +74,25 @@ const DEV_SERVER_CONFIG = {
   target: 'node',
   node: {
     __dirname: false,
-    __filename: false
+    __filename: false,
   },
   name: 'dev-server',
   entry: './src/index.js',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': "'production'"
-    })
+      'process.env.NODE_ENV': "'production'",
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
   output: {
     ...SERVER_CONFIG.output,
     path: dist,
-    filename: 'entry.js'
-  }
+    filename: 'entry.js',
+  },
 }
 
 module.exports = [
   CLIENT_CONFIG,
   SERVER_CONFIG,
-  isProduction && DEV_SERVER_CONFIG
+  isProduction && DEV_SERVER_CONFIG,
 ].filter(Boolean)
